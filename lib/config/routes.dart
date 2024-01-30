@@ -24,7 +24,9 @@ class Routes {
       default:
         return MaterialPageRoute(
           builder: (context) {
-            return const DefaultScreen();
+            return  DefaultScreen(
+              path: settings.name,
+            );
           },
         );
     }
