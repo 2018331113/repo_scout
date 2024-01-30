@@ -13,7 +13,7 @@ class Repo {
   final int watchersCount;
   final int forksCount;
   final int openIssuesCount;
-  final String language;
+  final String? language;
 
   Repo({
     required this.owner,
@@ -28,7 +28,7 @@ class Repo {
     required this.watchersCount,
     required this.forksCount,
     required this.openIssuesCount,
-    required this.language,
+    this.language,
   });
 
   factory Repo.fromJson(Map<String, dynamic> json) {
