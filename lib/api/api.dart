@@ -1,3 +1,5 @@
+import '../models/api_response.dart';
+import '../models/api_response_mode.dart';
 import 'http_manager.dart';
 
 class Api{
@@ -15,10 +17,22 @@ class Api{
   Api._internal();
 
 
-  Future getRepositories(Map<String, dynamic> query) async {
+  Future<ApiResponse> getRepositories(Map<String, dynamic> query) async {
    
     final response = await httpManager.get(url: _searchRepositories, params: query);
-    return response;
+    dynamic result;
+    if (response.apiMode == ApiMode.online) {
+      result = response.responseData;
+    } else {
+      //for offline logic
+    }
+    final responseModel = ApiResponse(
+      incompleteResults: result['incomplete_results'],
+      items: result['items'],
+      totalCount: result['total_count'],
+      message: result['message']??"success",
+    );
+    return responseModel;
   }
 
 
