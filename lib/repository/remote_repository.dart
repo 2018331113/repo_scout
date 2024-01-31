@@ -7,15 +7,19 @@ import '../api/api.dart';
 import '../models/repo.dart';
 import 'repository.dart';
 
-class RemoteRepository implements Repository{
-  @override
-  Future<dynamic> getRepositories(Query query) async{
-    
-    final params = query.toMap();
-   
-    ApiResponse apiResponse = await Api().getRepositories(params);
+class RemoteRepository implements Repository {
+  //create a constructor taking parameter of Api
+  late Api _api;
 
-   
+  RemoteRepository({required  Api api}) {
+    _api = api;
+  }
+  @override
+  Future<dynamic> getRepositories(Query query) async {
+    final params = query.toMap();
+
+    ApiResponse apiResponse = await _api.getRepositories(params);
+
     List<Repo> repos = [];
 
     for (var repo in apiResponse.items) {
@@ -23,9 +27,7 @@ class RemoteRepository implements Repository{
     }
 
     log(repos.length.toString());
-   
-    return repos;
 
-   
+    return repos;
   }
 }

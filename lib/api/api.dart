@@ -2,7 +2,9 @@ import '../models/api_response.dart';
 import '../models/api_response_mode.dart';
 import 'http_manager.dart';
 
-class Api{
+//for mock api
+
+class Api  {
 
   static const String _baseUrl = "https://api.github.com/";
   static const String _searchRepositories = "${_baseUrl}search/repositories";

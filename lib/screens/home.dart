@@ -36,7 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future getData() async {
-    repos = await RemoteRepository().getRepositories(
+    repos = await RemoteRepository(
+      api: Api(),
+    ).getRepositories(
       Query(
         q: "topic:flutter",
         sort: "stars",
