@@ -7,6 +7,8 @@ class Api{
   static const String _baseUrl = "https://api.github.com/";
   static const String _searchRepositories = "${_baseUrl}search/repositories";
   static String get baseUrl => _baseUrl;
+  static String get searchRepositories => _searchRepositories;
+  final HttpManager httpManager = HttpManager();
 
   static final Api _instance = Api._internal();
 
