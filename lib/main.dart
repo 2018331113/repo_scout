@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repo_scout/config/conntectivity.dart';
 
 import 'api/api.dart';
 import 'bloc/repo_bloc.dart';
@@ -31,10 +32,11 @@ class AppBlocObserver extends BlocObserver {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final hasInternet = await checkInternetConnection();
   LocalRepository.init();
   Bloc.observer = AppBlocObserver();
-  runApp(const MyApp(
-    hasInternet: false,
+  runApp( MyApp(
+    hasInternet: hasInternet,
   ));
 }
 
@@ -48,10 +50,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => RepoBloc(
-            repository:(hasInternet)? RemoteRepository(api: Api()): LocalRepository(),
+            repository: (hasInternet)
+                ? RemoteRepository(api: Api())
+                : LocalRepository(),
           )..add(RepoFetched(
-            hasInternet: hasInternet,
-          )),
+              hasInternet: hasInternet,
+            )),
         )
       ],
       child: MaterialApp(
