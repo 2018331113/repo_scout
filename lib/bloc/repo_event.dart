@@ -6,3 +6,13 @@ sealed class RepoEvent extends Equatable {
 }
 
 final class RepoFetched extends RepoEvent {}
+
+final class SortRepo extends RepoEvent {
+  final String sort;
+  final String order;
+
+  SortRepo({required this.sort, required this.order});
+
+  @override
+  List<Object> get props => [sort, order];
+}

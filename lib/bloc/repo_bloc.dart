@@ -16,37 +16,59 @@ class RepoBloc extends Bloc<RepoEvent, RepoState> {
   RepoBloc({required this.repository}) : super(const RepoState()) {
     on<RepoFetched>(_onRepoFetched,
         transformer: throttle(const Duration(milliseconds: 500)));
+
+    on<SortRepo>(_onRepoFetched,
+        transformer: throttle(const Duration(milliseconds: 500)));
   }
 
   Future<void> _onRepoFetched(RepoEvent event, Emitter<RepoState> emit) async {
     if (state.hasReachedMax) return;
+
     try {
-      if (state.status == RepoStatus.initial) {
-        
-        final repos = await _fetchPosts();
-        log(repos.length.toString());
+      if (event is SortRepo) {
+        final repos = await _fetchPosts(sort: event.sort, order: event.order);
         return emit(state.copyWith(
           status: RepoStatus.success,
           repos: repos,
           hasReachedMax: false,
+          sort: event.sort,
+          order: event.order,
         ));
+      } else {
+        if (state.status == RepoStatus.initial) {
+          final repos = await _fetchPosts();
+          return emit(state.copyWith(
+            status: RepoStatus.success,
+            repos: repos,
+            hasReachedMax: false,
+          ));
+        }
+        final repos = await _fetchPosts(
+          page: state.repos.length ~/ _repoLimit + 1,
+          sort: state.sort,
+          order: state.order,
+        );
+        emit(repos.isEmpty
+            ? state.copyWith(hasReachedMax: true)
+            : state.copyWith(
+                status: RepoStatus.success,
+                repos: List.of(state.repos)..addAll(repos),
+                hasReachedMax: false,
+              ));
       }
-      final repos = await _fetchPosts(state.repos.length ~/ _repoLimit + 1);
-      emit(repos.isEmpty
-          ? state.copyWith(hasReachedMax: true)
-          : state.copyWith(
-              status: RepoStatus.success,
-              repos: List.of(state.repos)..addAll(repos),
-              hasReachedMax: false,
-            ));
     } catch (_) {
       emit(state.copyWith(status: RepoStatus.failure));
     }
   }
 
-  Future<List<Repo>> _fetchPosts([int page = 1]) async {
-    final Query query =
-        Query(q: 'topic:Flutter', page: page, perPage: _repoLimit);
+  Future<List<Repo>> _fetchPosts(
+      {int page = 1, String sort = 'stars', String order = 'desc'}) async {
+    final Query query = Query(
+        q: 'topic:Flutter',
+        page: page,
+        perPage: _repoLimit,
+        sort: sort,
+        order: order);
     final repos = await repository.getRepositories(query);
     return repos;
   }
