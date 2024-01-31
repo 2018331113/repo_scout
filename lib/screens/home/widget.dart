@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/repo_bloc.dart';
+import '../../config/routes.dart';
 import '../../constants/app_constants.dart';
 import '../../constants/asset_path.dart';
 import '../../models/repo.dart';
+import '../../widgets/option_widget.dart';
+import '../../widgets/owner_widget.dart';
 
 class LanguageWidget extends StatelessWidget {
   const LanguageWidget({
@@ -36,34 +39,7 @@ class LanguageWidget extends StatelessWidget {
   }
 }
 
-class StarGazerWidget extends StatelessWidget {
-  const StarGazerWidget({
-    super.key,
-    required this.stargazersCount,
-  });
 
-  final int stargazersCount;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      const Icon(
-        Icons.star,
-        size: 18,
-        color: Colors.amber,
-      ),
-      hGap5,
-      Text(
-        stargazersCount.toString(),
-        style: TextStyle(
-          color: Colors.grey.shade200,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ]);
-  }
-}
 
 class RepoContainer extends StatelessWidget {
   final Repo repo;
@@ -76,55 +52,49 @@ class RepoContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.grey.shade800,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: const AssetImage(assetImageOwner),
-                  foregroundImage:
-                      CachedNetworkImageProvider(repo.owner.avatarUrl),
-                  radius: 10,
-                ),
-                hGap10,
-                Text(repo.owner.login),
-              ],
-            ),
-            vGap5,
-            Text(
-              repo.name,
-              maxLines: 1,
-              overflow: TextOverflow.fade,
-              style: titleStyle,
-            ),
-            vGap5,
-            Text(
-              repo.description,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.grey.shade500,
-                fontSize: 12,
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, Routes.details, arguments: repo);
+        },
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey.shade800,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              OwnerWidget(owner: repo.owner),
+              vGap5,
+              Text(
+                repo.name,
+                maxLines: 1,
+                overflow: TextOverflow.fade,
+                style: titleStyle,
               ),
-            ),
-            vGap5,
-            Row(
-              children: [
-                StarGazerWidget(
-                  stargazersCount: repo.stargazersCount,
+              vGap5,
+              Text(
+                repo.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.grey.shade500,
+                  fontSize: 12,
                 ),
-                hGap10,
-                if (repo.language != null) LanguageWidget(repo: repo),
-              ],
-            ),
-          ],
+              ),
+              vGap5,
+              Row(
+                children: [
+                  StarGazerWidget(
+                    stargazersCount: repo.stargazersCount,
+                  ),
+                  hGap10,
+                  if (repo.language != null) LanguageWidget(repo: repo),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

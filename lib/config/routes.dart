@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:repo_scout/models/repo.dart';
 
 import '../screens/screens.dart';
 
@@ -11,8 +11,10 @@ class RouteArguments<T> {
 
 class Routes {
   static const String home = "/home";
+  static const String details = "/details";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final args = settings.arguments;
     switch (settings.name) {
       case home:
         return MaterialPageRoute(
@@ -20,11 +22,18 @@ class Routes {
             return const HomeScreen();
           },
         );
-
+      case details:
+        return MaterialPageRoute(
+          builder: (context) {
+            return DetailsScreen(
+              repo: args as Repo,
+            );
+          },
+        );
       default:
         return MaterialPageRoute(
           builder: (context) {
-            return  DefaultScreen(
+            return DefaultScreen(
               path: settings.name,
             );
           },
@@ -40,4 +49,3 @@ class Routes {
 
   Routes._internal();
 }
-
