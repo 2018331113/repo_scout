@@ -1,0 +1,1 @@
+const String assetImageOwner = 'assets/images/owner.png';
