@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:repo_scout/models/owner.dart';
 
-class Repo {
+class Repo extends Equatable{
   final Owner owner;
   final String name;
   final String description;
@@ -66,4 +67,21 @@ class Repo {
       'language': language,
     };
   }
+  
+  @override
+  List<Object?> get props => [
+    owner,
+    name,
+    description,
+    private,
+    fork,
+    createdAt,
+    updatedAt,
+    pushedAt,
+    stargazersCount,
+    watchersCount,
+    forksCount,
+    openIssuesCount,
+    language,
+  ];
 }
