@@ -1,2 +1,2 @@
 export './default.dart';
-export './home.dart';
+export 'home/home.dart';
