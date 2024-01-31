@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:repo_scout/models/owner.dart';
 
@@ -33,12 +35,13 @@ class Repo extends Equatable{
   });
 
   factory Repo.fromJson(Map<String, dynamic> json) {
+    
     return Repo(
       owner: Owner.fromJson(json['owner']),
-      name: json['name'],
-      description: json['description'],
-      private: json['private'],
-      fork: json['fork'],
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      private: json['private'] ?? false,
+      fork: json['fork'] ?? false,
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       pushedAt: DateTime.parse(json['pushed_at']),
