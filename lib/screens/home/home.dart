@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repo_scout/repository/remote_repository.dart';
@@ -33,33 +32,32 @@ class _HomeScreenState extends State<HomeScreen> {
         toolbarHeight: 0,
       ),
       body: BlocBuilder<RepoBloc, RepoState>(
-      builder: (context, state) {
-        switch (state.status) {
-          case RepoStatus.failure:
-            return const Center(child: Text('failed to fetch repositories'));
-          case RepoStatus.success:
-            if (state.repos.isEmpty) {
-              return const Center(child: Text('no repository found'));
-            }
-            return ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.repos.length
-                    ? const BottomLoader()
-                    : RepoContainer(repo: state.repos[index]);
-              },
-              itemCount: state.hasReachedMax
-                  ? state.repos.length
-                  : state.repos.length + 1,
-              controller: _scrollController,
-            );
-          case RepoStatus.initial:
-            
-
-
-            return const Center(child: CircularProgressIndicator());
-        }
-      },
-    ),
+        builder: (context, state) {
+          switch (state.status) {
+            case RepoStatus.failure:
+              return const Center(child: Text('failed to fetch repositories'));
+            case RepoStatus.success:
+              if (state.repos.isEmpty) {
+                return const Center(child: Text('no repository found'));
+              }
+              return ListView.builder(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.repos.length
+                      ? const BottomLoader()
+                      : RepoContainer(repo: state.repos[index]);
+                },
+                itemCount: state.hasReachedMax
+                    ? state.repos.length
+                    : state.repos.length + 1,
+                controller: _scrollController,
+              );
+            case RepoStatus.initial:
+              return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 
@@ -77,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     setState(() {});
   }
-   @override
+
+  @override
   void dispose() {
     _scrollController
       ..removeListener(_onScroll)
@@ -96,6 +95,3 @@ class _HomeScreenState extends State<HomeScreen> {
     return currentScroll >= (maxScroll * 0.9);
   }
 }
-
-
-

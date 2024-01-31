@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => RepoBloc(
             repository: RemoteRepository(api: Api()),
-          )
+          )..add(RepoFetched()),
         )
       ],
       child: MaterialApp(
