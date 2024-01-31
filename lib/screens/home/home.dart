@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:repo_scout/constants/app_constants.dart';
-import 'package:repo_scout/constants/asset_path.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repo_scout/repository/remote_repository.dart';
 
 import '../../api/api.dart';
+import '../../bloc/repo_bloc.dart';
 import '../../models/query.dart';
 import '../../models/repo.dart';
 import 'widget.dart';
@@ -17,10 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _scrollController = ScrollController();
+
   List<Repo>? repos;
   @override
   void initState() {
-    getData();
+    _scrollController.addListener(_onScroll);
     super.initState();
   }
 
@@ -30,19 +32,34 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         toolbarHeight: 0,
       ),
-      body: Center(
-        child: (repos != null)
-            ? ListView.builder(
-                itemCount: repos!.length,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22,
-                  vertical: 20,
-                ),
-                itemBuilder: (context, index) {
-                  return RepoContainer(repo: repos![index]);
-                })
-            : const CircularProgressIndicator(),
-      ),
+      body: BlocBuilder<RepoBloc, RepoState>(
+      builder: (context, state) {
+        switch (state.status) {
+          case RepoStatus.failure:
+            return const Center(child: Text('failed to fetch repositories'));
+          case RepoStatus.success:
+            if (state.repos.isEmpty) {
+              return const Center(child: Text('no repository found'));
+            }
+            return ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return index >= state.repos.length
+                    ? const BottomLoader()
+                    : RepoContainer(repo: state.repos[index]);
+              },
+              itemCount: state.hasReachedMax
+                  ? state.repos.length
+                  : state.repos.length + 1,
+              controller: _scrollController,
+            );
+          case RepoStatus.initial:
+            
+
+
+            return const Center(child: CircularProgressIndicator());
+        }
+      },
+    ),
     );
   }
 
@@ -60,72 +77,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     setState(() {});
   }
-}
+   @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
 
-class RepoContainer extends StatelessWidget {
-  final Repo repo;
-  const RepoContainer({
-    super.key,
-    required this.repo,
-  });
+  void _onScroll() {
+    if (_isBottom) context.read<RepoBloc>().add(RepoFetched());
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.grey.shade800,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: const AssetImage(assetImageOwner),
-                  foregroundImage:
-                      CachedNetworkImageProvider(repo.owner.avatarUrl),
-                  radius: 10,
-                ),
-                hGap10,
-                Text(repo.owner.login),
-              ],
-            ),
-            vGap5,
-            Text(
-              repo.name,
-              maxLines: 1,
-              overflow: TextOverflow.fade,
-              style: titleStyle,
-            ),
-            vGap5,
-            Text(
-              repo.description,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.grey.shade500,
-                fontSize: 12,
-              ),
-            ),
-            vGap5,
-            Row(
-              children: [
-                StarGazerWidget(
-                  stargazersCount: repo.stargazersCount,
-                ),
-                hGap10,
-                if (repo.language != null)
-                  LanguageWidget(repo: repo),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }
+
+
 
