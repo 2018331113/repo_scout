@@ -4,6 +4,7 @@ enum RepoStatus { initial, success, failure }
 
 final class RepoState extends Equatable {
   const RepoState( {
+    this.hasInternet = true,
     this.status = RepoStatus.initial,
     this.repos = const <Repo>[],
     this.sort = 'stars',
@@ -16,13 +17,14 @@ final class RepoState extends Equatable {
   final bool hasReachedMax;
   final String order;
   final String sort;
-
+  final bool hasInternet;
   RepoState copyWith({
     RepoStatus? status,
     List<Repo>? repos,
     bool? hasReachedMax,
     String? order,
     String? sort,
+    bool? hasInternet,
   }) {
     return RepoState(
       status: status ?? this.status,
@@ -30,6 +32,7 @@ final class RepoState extends Equatable {
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       order: order ?? this.order,
       sort: sort ?? this.sort,
+      hasInternet: hasInternet?? this.hasInternet,
     );
   }
 

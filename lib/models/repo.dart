@@ -8,7 +8,6 @@ class Repo extends Equatable{
   final String name;
   final String description;
   final bool private;
-  final bool fork;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime pushedAt;
@@ -18,12 +17,11 @@ class Repo extends Equatable{
   final int openIssuesCount;
   final String? language;
 
-  Repo({
+  const Repo({
     required this.owner,
     required this.name,
     required this.description,
     required this.private,
-    required this.fork,
     required this.createdAt,
     required this.updatedAt,
     required this.pushedAt,
@@ -41,7 +39,6 @@ class Repo extends Equatable{
       name: json['name'] ?? '',
       description: json['description'] ?? '',
       private: json['private'] ?? false,
-      fork: json['fork'] ?? false,
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       pushedAt: DateTime.parse(json['pushed_at']),
@@ -53,16 +50,52 @@ class Repo extends Equatable{
     );
   }
 
+  factory Repo.fromDb(Map<String, dynamic> db) {
+    return Repo(
+      owner: Owner(avatarUrl: db['owner_img'], login: db['owner_name']),
+      name: db['name'],
+      description: db['description'],
+      private: db['private'] == 1 ? true : false,
+      createdAt: DateTime.parse(db['created_at']) ,
+      updatedAt: DateTime.parse(db['updated_at']),
+      pushedAt: DateTime.parse(db['pushed_at']),
+      stargazersCount: db['stargazers_count'],
+      watchersCount: db['watchers_count'],
+      forksCount: db['forks_count'],
+      openIssuesCount: db['open_issues_count'],
+      language: db['language'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'owner': owner,
       'name': name,
       'description': description,
       'private': private,
-      'fork': fork,
       'created_at': createdAt,
       'updated_at': updatedAt,
       'pushed_at': pushedAt,
+      'stargazers_count': stargazersCount,
+      'watchers_count': watchersCount,
+      'forks_count': forksCount,
+      'open_issues_count': openIssuesCount,
+      'language': language,
+    };
+
+
+  }
+
+  Map<String, dynamic> toDb() {
+    return {
+      'owner_img': owner.avatarUrl,
+      'owner_name': owner.login,
+      'name': name,
+      'description': description,
+      'private': private ? 1 : 0,
+      'created_at': createdAt.toString(),
+      'updated_at': updatedAt.toString(),
+      'pushed_at': pushedAt.toString(),
       'stargazers_count': stargazersCount,
       'watchers_count': watchersCount,
       'forks_count': forksCount,
@@ -77,7 +110,6 @@ class Repo extends Equatable{
     name,
     description,
     private,
-    fork,
     createdAt,
     updatedAt,
     pushedAt,

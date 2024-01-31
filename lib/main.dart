@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'api/api.dart';
 import 'bloc/repo_bloc.dart';
 import 'config/routes.dart';
+import 'repository/local_repository.dart';
 import 'repository/remote_repository.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -28,13 +29,18 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocalRepository.init();
   Bloc.observer = AppBlocObserver();
-  runApp(const MyApp());
+  runApp(const MyApp(
+    hasInternet: false,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool hasInternet;
+  const MyApp({super.key, required this.hasInternet});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +48,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => RepoBloc(
-            repository: RemoteRepository(api: Api()),
-          )..add(RepoFetched()),
+            repository:(hasInternet)? RemoteRepository(api: Api()): LocalRepository(),
+          )..add(RepoFetched(
+            hasInternet: hasInternet,
+          )),
         )
       ],
       child: MaterialApp(

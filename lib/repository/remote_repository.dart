@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:repo_scout/models/api_response.dart';
 import 'package:repo_scout/models/query.dart';

@@ -71,28 +71,26 @@ class DetailsScreen extends StatelessWidget {
               ),
             ),
             vGap10,
-            Flexible(
-              child: Row(children: [
-                Flexible(
-                  child: StarGazerWidget(
-                    stargazersCount: repo.stargazersCount,
-                    expanded: true,
-                  ),
+            Row(children: [
+              Flexible(
+                child: StarGazerWidget(
+                  stargazersCount: repo.stargazersCount,
+                  expanded: true,
                 ),
-                Flexible(
-                  child: ForkWidget(
-                    forksCount: repo.forksCount,
-                    expanded: true,
-                  ),
+              ),
+              Flexible(
+                child: ForkWidget(
+                  forksCount: repo.forksCount,
+                  expanded: true,
                 ),
-                Flexible(
-                  child: WatcherWidget(
-                    watchersCount: repo.watchersCount,
-                    expanded: true,
-                  ),
+              ),
+              Flexible(
+                child: WatcherWidget(
+                  watchersCount: repo.watchersCount,
+                  expanded: true,
                 ),
-              ]),
-            ),
+              ),
+            ]),
             vGap20,
             Container(
                 padding: const EdgeInsets.symmetric(

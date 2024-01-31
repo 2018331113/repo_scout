@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repo_scout/db/local_db.dart';
 import '../../bloc/repo_bloc.dart';
 import '../../models/repo.dart';
+import '../../repository/local_repository.dart';
 import 'widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Repo>? repos;
   @override
   void initState() {
+    startTimer();
     _scrollController.addListener(_onScroll);
     super.initState();
   }
@@ -47,7 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<RepoBloc>().add(RepoFetched());
+    if (_isBottom) {
+      context.read<RepoBloc>().add(
+          RepoFetched(hasInternet: context.read<RepoBloc>().state.hasInternet));
+    }
   }
 
   bool get _isBottom {
@@ -55,6 +64,25 @@ class _HomeScreenState extends State<HomeScreen> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.9);
+  }
+
+  Future startTimer() async {
+    final internet = context.read<RepoBloc>().state.hasInternet;
+    if (internet) {
+      Timer.periodic(const Duration(minutes: 30), (Timer t) async {
+        // Get the current state of the RepoBloc
+        final currentState = context.read<RepoBloc>().state;
+
+        log("timer started");
+        // Check if the current state is RepoSuccess (or whatever state indicates that repos are loaded)
+        if (currentState.status == RepoStatus.success) {
+          // Cache the repos
+          final repos = currentState.repos;
+          await LocalRepository.deleteAllRecords();
+          await LocalRepository.cacheRepos(repos);
+        }
+      });
+    }
   }
 }
 

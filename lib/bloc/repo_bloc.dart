@@ -24,6 +24,7 @@ class RepoBloc extends Bloc<RepoEvent, RepoState> {
   Future<void> _onRepoFetched(RepoEvent event, Emitter<RepoState> emit) async {
     if (state.hasReachedMax) return;
 
+    
     try {
       if (event is SortRepo) {
         final repos = await _fetchPosts(sort: event.sort, order: event.order);
@@ -34,7 +35,8 @@ class RepoBloc extends Bloc<RepoEvent, RepoState> {
           sort: event.sort,
           order: event.order,
         ));
-      } else {
+      } else if( event is RepoFetched) {
+        emit(state.copyWith(hasInternet: event.hasInternet));
         if (state.status == RepoStatus.initial) {
           final repos = await _fetchPosts();
           return emit(state.copyWith(
@@ -52,11 +54,13 @@ class RepoBloc extends Bloc<RepoEvent, RepoState> {
             ? state.copyWith(hasReachedMax: true)
             : state.copyWith(
                 status: RepoStatus.success,
-                repos: List.of(state.repos)..addAll(repos),
+                repos: (state.hasInternet)
+                    ? (List.of(state.repos)..addAll(repos))
+                    : repos,
                 hasReachedMax: false,
               ));
       }
-    } catch (_) {
+    } catch (e) {
       emit(state.copyWith(status: RepoStatus.failure));
     }
   }

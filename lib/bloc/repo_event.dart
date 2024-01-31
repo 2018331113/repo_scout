@@ -5,7 +5,11 @@ sealed class RepoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class RepoFetched extends RepoEvent {}
+final class RepoFetched extends RepoEvent {
+  final bool hasInternet;
+
+  RepoFetched({required this.hasInternet});
+}
 
 final class SortRepo extends RepoEvent {
   final String sort;
