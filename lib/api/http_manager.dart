@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:repo_scout/models/api_response_mode.dart';
 
@@ -52,13 +50,23 @@ ApiResponseMode dioErrorHandle(DioException error) {
 }
 
 class HttpManager {
+  Dio dio;
   static final HttpManager _instance = HttpManager._internal();
 
   factory HttpManager() {
+    
     return _instance;
   }
 
-  HttpManager._internal();
+  HttpManager._internal(): dio = Dio(
+          BaseOptions(
+            baseUrl: Api.baseUrl,
+            connectTimeout: const Duration(milliseconds: 10000),
+            receiveTimeout: const Duration(milliseconds: 10000),
+            contentType: Headers.formUrlEncodedContentType,
+            responseType: ResponseType.json,
+          ),
+        );
 
   BaseOptions baseOptions = BaseOptions(
     baseUrl: Api.baseUrl,
@@ -73,7 +81,7 @@ class HttpManager {
     Map<String, dynamic>? params,
     Options? options,
   }) async {
-    Dio dio = Dio(baseOptions);
+    final dio = Dio(baseOptions);
     try {
       final response = await dio.get(
         url,
@@ -91,4 +99,3 @@ class HttpManager {
   }
 }
 
-HttpManager httpManager = HttpManager();
