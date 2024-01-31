@@ -126,95 +126,16 @@ class OnSuccessView extends StatelessWidget {
                         : state.repos.length + 1,
                     controller: _scrollController,
                   ),
-                  const Positioned(
+                  Positioned(
                     bottom: 20,
                     right: 20,
-                    child: MyPopupMenuButton(),
+                    child: MyPopupMenuButton(
+                      sort: state.sort,
+                      order: state.order,
+                    ),
                   ),
                 ],
               ));
-  }
-}
-
-class MyPopupMenuButton extends StatefulWidget {
-  const MyPopupMenuButton({super.key});
-
-  @override
-  _MyPopupMenuButtonState createState() => _MyPopupMenuButtonState();
-}
-
-class _MyPopupMenuButtonState extends State<MyPopupMenuButton> {
-  List<bool> selectedValues = [true, false, false, false, true];
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).colorScheme.primaryContainer,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade900,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            )
-          ]),
-      child: PopupMenuButton<int>(
-        itemBuilder: (context) => <PopupMenuEntry<int>>[
-          CheckedPopupMenuItem<int>(
-            value: 0,
-            checked: selectedValues[0],
-            child: const Text('Stars'),
-          ),
-          CheckedPopupMenuItem<int>(
-            value: 1,
-            checked: selectedValues[1],
-            child: const Text('Forks'),
-          ),
-          CheckedPopupMenuItem<int>(
-            value: 2,
-            checked: selectedValues[2],
-            child: const Text('Updated'),
-          ),
-          const PopupMenuDivider(),
-          CheckedPopupMenuItem<int>(
-            value: 3,
-            checked: selectedValues[3],
-            child: const Text('Ascending'),
-          ),
-          CheckedPopupMenuItem<int>(
-            value: 4,
-            checked: selectedValues[4],
-            child: const Text('Descending'),
-          ),
-        ],
-        onSelected: (value) {
-          setState(() {
-            if (value < 3) {
-              for (int i = 0; i < 3; i++) {
-                if (i != value) {
-                  selectedValues[i] = false;
-                } else {
-                  selectedValues[i] = true;
-                }
-              }
-            }
-            if (value == 3) {
-              selectedValues[4] = !selectedValues[3];
-            }
-            if (value == 4) {
-              selectedValues[3] = !selectedValues[4];
-            }
-          });
-        },
-        icon: const Icon(Icons.more_vert),
-      ),
-    );
   }
 }
 

@@ -17,16 +17,13 @@ class RemoteRepository implements Repository {
   @override
   Future<dynamic> getRepositories(Query query) async {
     final params = query.toMap();
-
-    ApiResponse apiResponse = await _api.getRepositories(params);
-
+    ApiResponse apiResponse = await _api.getRepositories(params); 
     List<Repo> repos = [];
-
     for (var repo in apiResponse.items) {
       repos.add(Repo.fromJson(repo));
     }
-
-    log(repos.length.toString());
+    
+  
 
     return repos;
   }
