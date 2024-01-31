@@ -31,7 +31,7 @@ class Api  {
       //for offline logic
     }
     final responseModel = ApiResponse(
-      incompleteResults: result['incomplete_results'],
+      incompleteResults: result['incomplete_results']?? true,
       items: result['items'],
       totalCount: result['total_count'],
       message: result['message']??"success",

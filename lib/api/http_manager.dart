@@ -17,7 +17,7 @@ ApiResponseMode dioErrorHandle(DioException error) {
       );
     case DioExceptionType.sendTimeout:
       return ApiResponseMode(
-        apiMode: ApiMode.offline,
+        apiMode: ApiMode.online,
         responseData: {
           "incomplete_results": true,
           "items": [],
@@ -27,7 +27,7 @@ ApiResponseMode dioErrorHandle(DioException error) {
       );
     case DioExceptionType.receiveTimeout:
       return ApiResponseMode(
-        apiMode: ApiMode.offline,
+        apiMode: ApiMode.online,
         responseData: {
           "incomplete_results": true,
           "items": [],
@@ -38,7 +38,7 @@ ApiResponseMode dioErrorHandle(DioException error) {
 
     default:
       return ApiResponseMode(
-        apiMode: ApiMode.offline,
+        apiMode: ApiMode.online,
         responseData: {
           "incomplete_results": true,
           "items": [],
