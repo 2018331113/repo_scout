@@ -6,44 +6,44 @@ This project is a repository explorer app that uses Flutter and [GitHub API](htt
 - I have chosed **Repostiory Pattern** and for State Management I chose **BLoC**.
 Both of them contribute to scalability and maintainability for future enhancements. 
 - I have separated each concerns for clean, readable and reusable code structure. 
-lib
-├── api
-│   ├── api.dart
-│   └── http_manager.dart
-├── db
-│   └── local_db.dart
-├── config
-│   ├── connectivity.dart
-│   └── routes.dart
-├── bloc
-│   ├── repo_bloc.dart
-│   ├── repo_event.dart
-│   └── repo_state.dart
-├── repository
-│    ├── repository.dart
-│    ├── local_repository.dart
-│    └── remote_repository.dart
-├── models
-│    ├── repo.dart
-│    ├── query.dart
-│    ├── owner.dart
-│    ├── api_response.dart
-│    └── api_response_mode.dart
-├── main.dart
-├── screens
-│   ├── home
-│   │   ├── home.dart
-│   │   └── widget.dart
-│   └── details
-│   -   ├── details.dart
-│   -   └── widget.dart
-├── constants
-│   ├── app_constants.dart
-│   └── asset_path.dart
-└── widgets
-│   ├── option_widget.dart
-│   └── owner.dart
-
+lib  
+├── api  
+│   ├── api.dart  
+│   └── http_manager.dart  
+├── db  
+│   └── local_db.dart  
+├── config  
+│   ├── connectivity.dart  
+│   └── routes.dart  
+├── bloc  
+│   ├── repo_bloc.dart  
+│   ├── repo_event.dart  
+│   └── repo_state.dart  
+├── repository  
+│    ├── repository.dart  
+│    ├── local_repository.dart  
+│    └── remote_repository.dart  
+├── models  
+│    ├── repo.dart  
+│    ├── query.dart  
+│    ├── owner.dart  
+│    ├── api_response.dart  
+│    └── api_response_mode.dart  
+├── main.dart  
+├── screens  
+│   ├── home  
+│   │   ├── home.dart  
+│   │   └── widget.dart  
+│   └── details  
+│   -   ├── details.dart  
+│   -   └── widget.dart  
+├── constants  
+│   ├── app_constants.dart  
+│   └── asset_path.dart  
+└── widgets  
+│   ├── option_widget.dart  
+│   └── owner.dart  
+  
 - I have used [Dio](https://pub.dev/packages/dio) package for calling the API.
 - I have used [Sqflite](https://pub.dev/packages/sqflite) for local data caching.
 - For minimizing costly api calls I also added **throttling** via [bloc_event_transformers](https://pub.dev/packages/bloc_event_transformers)
