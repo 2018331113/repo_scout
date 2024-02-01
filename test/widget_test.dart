@@ -5,12 +5,9 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:repo_scout/api/api.dart';
 import 'package:repo_scout/api/http_manager.dart';
-import 'package:repo_scout/models/api_response.dart';
 import 'package:repo_scout/models/api_response_mode.dart';
 import 'package:repo_scout/models/query.dart';
 import 'package:repo_scout/models/repo.dart';

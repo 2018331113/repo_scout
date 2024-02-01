@@ -35,7 +35,7 @@ void main() async {
   final hasInternet = await checkInternetConnection();
   LocalRepository.init();
   Bloc.observer = AppBlocObserver();
-  runApp( MyApp(
+  runApp(MyApp(
     hasInternet: hasInternet,
   ));
 }
@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Repo Scout',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

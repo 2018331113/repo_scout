@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:repo_scout/db/local_db.dart';
 import '../../bloc/repo_bloc.dart';
 import '../../models/repo.dart';
 import '../../repository/local_repository.dart';

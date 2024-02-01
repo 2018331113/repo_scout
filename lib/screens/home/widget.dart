@@ -1,13 +1,11 @@
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/repo_bloc.dart';
 import '../../config/routes.dart';
 import '../../constants/app_constants.dart';
-import '../../constants/asset_path.dart';
 import '../../models/repo.dart';
 import '../../widgets/option_widget.dart';
 import '../../widgets/owner_widget.dart';
