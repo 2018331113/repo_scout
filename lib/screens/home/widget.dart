@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repo_scout/service/loading.dart';
 
 import '../../bloc/repo_bloc.dart';
 import '../../config/routes.dart';
@@ -36,8 +37,6 @@ class LanguageWidget extends StatelessWidget {
     );
   }
 }
-
-
 
 class RepoContainer extends StatelessWidget {
   final Repo repo;
@@ -248,11 +247,18 @@ class _MyPopupMenuButtonState extends State<MyPopupMenuButton> {
                   : selectedValues[value - 1] = false;
             }
 
+            // * TODO: Add loading
+            //Loading.dismiss(context);
+           
             context.read<RepoBloc>().add(SortRepo(
                   sort: getSortValue(_sortType),
                   order: _orderType == OrderType.asc ? 'asc' : 'desc',
                 ));
           });
+
+          // * TODO: Dismiss loading
+          //Loading.dismiss(context);
+          
         },
         icon: const Icon(Icons.sort),
       ),
