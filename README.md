@@ -5,7 +5,7 @@ This project is a repository explorer app that uses Flutter and [GitHub API](htt
 ## My Approach
 - I have chosed **Repostiory Pattern** and for State Management I chose **BLoC**.
 Both of them contribute to scalability and maintainability for future enhancements. 
-- I have separated each concerns for clean, readable and reusable code structure. 
+- I have separated each concerns for clean, readable and reusable code structure.   
 lib  
 ├── api  
 │   ├── api.dart  
