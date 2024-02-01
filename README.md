@@ -47,6 +47,7 @@ lib
 - I have used [Dio](https://pub.dev/packages/dio) package for calling the API.
 - I have used [Sqflite](https://pub.dev/packages/sqflite) for local data caching.
 - For minimizing costly api calls I also added **throttling** via [bloc_event_transformers](https://pub.dev/packages/bloc_event_transformers)
+- Done **unit tests** for network api calls and json serialization.
 
 Basically this application can run on both online and offline mode. After first run in online, it caches all the fetched repos into local database. Next time when you enter the application without internet it shows the cached repos. You can also view their details.
 
