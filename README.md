@@ -93,6 +93,9 @@ The overall structure of the application is shown below:
 
 ## APK Link
 - [arm64](https://drive.google.com/file/d/1vhbLL4LYGOpz6f_zCIpi7zjOKBQj3rLr/view?usp=sharing)
+- [armeabi](https://drive.google.com/file/d/1nyfkZZffI4TnqmUzZajLcBJqgO0iCmnR/view?usp=sharing)
+- [app-x86_64](https://drive.google.com/file/d/1E7Im2e2Sv55ojkqNoqMUtjw6K2qmLNw6/view?usp=sharing)
+
 ## Future Scopes
 
 - Add search feature.
