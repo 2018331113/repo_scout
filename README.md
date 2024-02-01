@@ -91,6 +91,8 @@ The overall structure of the application is shown below:
 :-------------------------:|:-------------------------:
 ![offline_3](./assets/docs/online_3.jpg)| ![offline_details](./assets/docs/details_offline.jpg)
 
+## APK Link
+- [arm64](https://drive.google.com/file/d/1vhbLL4LYGOpz6f_zCIpi7zjOKBQj3rLr/view?usp=sharing)
 ## Future Scopes
 
 - Add search feature.
